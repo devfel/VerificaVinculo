@@ -1,0 +1,22 @@
+// Regras Mensagens de erro:
+// 1. Não pode trabalhar mais de 6 horas seguidas
+// 2. Não pode trabalhar mais de 10 horas por dia
+// 3. Deve haver um intervalo de 11 horas entre o final de um dia e o início do próximo
+// 4. Não pode haver sobreposição de horários no mesmo dia, independente da empresa
+
+// Regras de Impedimento de Inserção de Horário:
+// 5. Um novo horário deve ter um horario inicial menor que a hora final.
+// 6. Um novo horário deve ser entre 00:00 e 23:59 tanto para o horário inicial quanto para o final.
+
+// TODO
+// [ ] Ao inves de conferir um horario adicionado, o sistema deve conferir todos os horarios e aplicar as regras necessarias que encontrar/mensagens.
+// isso vai ajudar a controlar nao apenas a inserçao de horarios mas tambem a edição e remoção de horarios.
+
+// [ ] Colocar total de horas em cada vínculo (empresa).
+// [ ] Alterar informações de horários já cadastrados (ou pelo menos ter opção de excluir)
+// [ ] Talvez Remover algumas regras de algumas vinculos quando nao UFSJ
+// [ ] Deslocamento não conta em algumas regras e conta em outras
+// [ ] Salvar Link para compartilhar
+// [ ] Ter um dia de descanso na semana
+// [ ] Remover alerta de horario batendo. Apenas mostrar o erro.
+// [ ] Se o deslocamento for adicionado antes do horario do trabalho ele nao identifica.

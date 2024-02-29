@@ -4,55 +4,94 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Compatibilidade de Horário</title>
-    <style>
-      /* Add CSS styles if necessary */
-    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h2>Compatibilidade de Horário</h2>
-    <select id="daySelect">
-      <option value="Segunda">Segunda</option>
-      <option value="Terca">Terca</option>
-      <option value="Quarta">Quarta</option>
-      <option value="Quinta">Quinta</option>
-      <option value="Sexta">Sexta</option>
-      <option value="Sabado">Sabado</option>
-      <option value="Domingo">Domingo</option>
-    </select>
-    <label>Inicial:</label>
-    <input type="number" id="startHour" min="0" max="23" placeholder="HH" /> :
-    <input type="number" id="startMinute" min="0" max="59" placeholder="MM" />
-    <label>Final:</label>
-    <input type="number" id="endHour" min="0" max="23" placeholder="HH" /> :
-    <input type="number" id="endMinute" min="0" max="59" placeholder="MM" />
+    <div class="container mt-5">
+      <header>
+        <h2 class="mb-4">Compatibilidade de Horário</h2>
 
-    <label>Vínculo:</label>
-    <select id="companySelect">
-      <option value="UFSJ 1">UFSJ 1</option>
-      <option value="UFSJ 2">UFSJ 2</option>
-      <option value="Empresa 3">Empresa 3</option>
-      <option value="Empresa 4">Empresa 4</option>
-      <option value="Empresa 5">Empresa 5</option>
-      <option value="Empresa 6">Empresa 6</option>
-      <option value="Deslocamento">Deslocamento</option>
-    </select>
+        <div class="row custom-gutter">
+          <div class="col-12 col-sm-3">
+            <label for="daySelect">Dia da Semana:</label>
+            <select id="daySelect" class="form-control">
+              <option value="Segunda">Segunda</option>
+              <option value="Terca">Terca</option>
+              <option value="Quarta">Quarta</option>
+              <option value="Quinta">Quinta</option>
+              <option value="Sexta">Sexta</option>
+              <option value="Sabado">Sabado</option>
+              <option value="Domingo">Domingo</option>
+            </select>
+          </div>
 
-    <button onclick="addTime()">Adicionar</button>
+          <div class="col-12 col-sm-3">
+            <label for="companySelect">Vínculo:</label>
+            <select id="companySelect" class="form-control">
+              <option value="UFSJ 1">UFSJ 1</option>
+              <option value="UFSJ 2">UFSJ 2</option>
+              <option value="Empresa 3">Empresa 3</option>
+              <option value="Empresa 4">Empresa 4</option>
+              <option value="Empresa 5">Empresa 5</option>
+              <option value="Empresa 6">Empresa 6</option>
+              <option value="Deslocamento">Deslocamento</option>
+            </select>
+          </div>
 
-    <table id="scheduleTable">
-      <thead>
-        <tr>
-          <th>Dia</th>
-          <th>Horário</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Time slots will be added here -->
-      </tbody>
-    </table>
+          <div class="col-12 col-sm-3">
+            <label>Inicial:</label>
+            <div class="input-group">
+              <input type="number" id="startHour" class="form-control" min="0" max="23" placeholder="HH" />
+              <div class="input-group-append"><span class="input-group-text">:</span></div>
+              <input type="number" id="startMinute" class="form-control" min="0" max="59" placeholder="MM" />
+            </div>
+          </div>
 
-    <div id="errorMessages" style="color: red"></div>
+          <div class="col-12 col-sm-3">
+            <label>Final:</label>
+            <div class="input-group">
+              <input type="number" id="endHour" class="form-control" min="0" max="23" placeholder="HH" />
+              <div class="input-group-append"><span class="input-group-text">:</span></div>
+              <input type="number" id="endMinute" class="form-control" min="0" max="59" placeholder="MM" />
+            </div>
+          </div>
+        </div>
 
-    <script src="schedule.js"></script>
+        <div class="d-flex justify-content-end">
+          <button id="addEmploymentBondButton" class="btn btn-primary mt-3">Adicionar</button>
+        </div>
+      </header>
+
+      <table id="scheduleTable" class="table mt-4">
+        <thead>
+          <tr>
+            <th>Dia</th>
+            <th>Horário</th>
+            <th>Vínculo</th>
+            <!-- Assuming you want to display the company in a third column -->
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Dynamic content will go here -->
+        </tbody>
+      </table>
+
+      <hr />
+      <!-- Error Messages -->
+      <div class="section-title" style="color: red">Erros</div>
+      <div id="errorMessages"></div>
+
+      <hr />
+      <!-- Company Hours Summary, potentially using Bootstrap cards -->
+      <div class="section-title" style="color: blue">Somatórios</div>
+      <div id="companyHoursSummary"></div>
+    </div>
+
+    <script type="module" src="schedule.js"></script>
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   </body>
 </html>

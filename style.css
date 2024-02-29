@@ -1,0 +1,93 @@
+/* style.css */
+
+#errorMessages {
+  color: red;
+}
+
+#companyHoursSummary {
+  color: blue;
+}
+
+body {
+  font-family: "Arial", sans-serif; /* Change the font family */
+  font-size: 0.75rem; /* Reduce the base font size */
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  padding: 10px; /* Reduce overall spacing */
+}
+
+.row {
+}
+
+.form-control,
+.btn,
+.table {
+  font-size: 0.75rem; /* Smaller form controls, buttons, and table text */
+}
+
+.input-group-text {
+  font-size: 0.75rem; /* Smaller input group addon text */
+  padding-left: 0.25rem; /* Reduce left padding */
+  padding-right: 0.25rem; /* Reduce right padding */
+}
+
+/* Optional: Adjust if needed */
+.input-group .form-control {
+  margin-left: -1px;
+  margin-right: -1px;
+}
+
+.row.custom-gutter {
+  margin-left: -5px;
+  margin-right: -5px;
+}
+.row.custom-gutter > [class^="col-"] {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.btn {
+  width: 200px;
+}
+
+label {
+  font-weight: bold;
+}
+
+header {
+  background-color: #ccc; /* Soft shade of blue */
+  padding: 10px;
+}
+
+/* Reduce bottom margin of the table and the "Erros" heading */
+#scheduleTable th,
+#scheduleTable td {
+  padding: 1px; /* Adjust this value as needed */
+}
+
+/* Reduce top margin of the "Erros" and "Somatórios" sections */
+#errorMessages,
+#companyHoursSummary {
+  margin-top: 0; /* Removes the top margin */
+}
+
+/* Optional: Adjust padding if necessary */
+#errorMessages,
+#companyHoursSummary {
+  padding-top: 5px; /* Adds a little space at the top if needed */
+  padding-bottom: 5px; /* Adds a little space at the bottom if needed */
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.section-title {
+  margin: 2px;
+  padding: 2px;
+  font-weight: bold;
+}
