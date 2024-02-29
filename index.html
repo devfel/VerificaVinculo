@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compatibilidade de Horário</title>
+    <style>
+      /* Add CSS styles if necessary */
+    </style>
+  </head>
+  <body>
+    <h2>Compatibilidade de Horário</h2>
+    <select id="daySelect">
+      <option value="Segunda">Segunda</option>
+      <option value="Terca">Terca</option>
+      <option value="Quarta">Quarta</option>
+      <option value="Quinta">Quinta</option>
+      <option value="Sexta">Sexta</option>
+      <option value="Sabado">Sabado</option>
+      <option value="Domingo">Domingo</option>
+    </select>
+    <label>Inicial:</label>
+    <input type="number" id="startHour" min="0" max="23" placeholder="HH" /> :
+    <input type="number" id="startMinute" min="0" max="59" placeholder="MM" />
+    <label>Final:</label>
+    <input type="number" id="endHour" min="0" max="23" placeholder="HH" /> :
+    <input type="number" id="endMinute" min="0" max="59" placeholder="MM" />
+
+    <label>Vínculo:</label>
+    <select id="companySelect">
+      <option value="UFSJ 1">UFSJ 1</option>
+      <option value="UFSJ 2">UFSJ 2</option>
+      <option value="Empresa 3">Empresa 3</option>
+      <option value="Empresa 4">Empresa 4</option>
+      <option value="Empresa 5">Empresa 5</option>
+      <option value="Empresa 6">Empresa 6</option>
+      <option value="Deslocamento">Deslocamento</option>
+    </select>
+
+    <button onclick="addTime()">Adicionar</button>
+
+    <table id="scheduleTable">
+      <thead>
+        <tr>
+          <th>Dia</th>
+          <th>Horário</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Time slots will be added here -->
+      </tbody>
+    </table>
+
+    <div id="errorMessages" style="color: red"></div>
+
+    <script src="schedule.js"></script>
+  </body>
+</html>
