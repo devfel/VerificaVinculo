@@ -11,12 +11,16 @@
 // TODO
 // [ ] Ao inves de conferir um horario adicionado, o sistema deve conferir todos os horarios e aplicar as regras necessarias que encontrar/mensagens.
 // isso vai ajudar a controlar nao apenas a inserçao de horarios mas tambem a edição e remoção de horarios.
-
-// [ ] Colocar total de horas em cada vínculo (empresa).
 // [ ] Alterar informações de horários já cadastrados (ou pelo menos ter opção de excluir)
 // [ ] Talvez Remover algumas regras de algumas vinculos quando nao UFSJ
-// [ ] Deslocamento não conta em algumas regras e conta em outras
-// [ ] Salvar Link para compartilhar
-// [ ] Ter um dia de descanso na semana
+
 // [ ] Remover alerta de horario batendo. Apenas mostrar o erro.
 // [ ] Se o deslocamento for adicionado antes do horario do trabalho ele nao identifica.
+
+// [X] Colocar total de horas em cada vínculo (empresa).
+// [X] Deslocamento não conta em algumas regras e conta em outras (conta por exemplo no overlap mas nao conta em horas trabalhadas)
+// [X] Ter um dia de descanso na semana
+
+// [X] Salvar Link para compartilhar
+// [ ] Link não carrega os Erros (tem que recalcular os erros)
+// [ ] Link é muito grande, tem que alterar para usar codigos ao inves das entradas todas.

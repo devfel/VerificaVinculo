@@ -91,3 +91,7 @@ p {
   padding: 2px;
   font-weight: bold;
 }
+
+.red-icon {
+  color: red;
+}

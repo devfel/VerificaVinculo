@@ -2,20 +2,31 @@
 import { convertToMinutes } from "./utils.js";
 
 // Function to check for overlapping hours in the schedule
-export function validateOverlappingHours(schedule, day, startTime, endTime, company) {
+export function validateOverlappingHours(schedule) {
   let messages = [];
 
-  const isOverlap = schedule[day]?.some((slot) => !(endTime <= slot.start || startTime >= slot.end));
-
-  if (isOverlap) {
-    let errorMessage;
-    if (company === "Deslocamento") {
-      errorMessage = `- Existe um conflito de deslocamento e horário de trabalho no(a) ${day}.`;
-    } else {
-      errorMessage = `- Existe um conflito de horários de trabalhos no(a) ${day}.`;
+  Object.keys(schedule).forEach((day) => {
+    let dayEntries = schedule[day];
+    // Compare each entry against all others in the same day
+    for (let i = 0; i < dayEntries.length; i++) {
+      for (let j = i + 1; j < dayEntries.length; j++) {
+        let entryA = dayEntries[i];
+        let entryB = dayEntries[j];
+        // Check if entryA overlaps with entryB
+        if (!(entryA.end <= entryB.start || entryA.start >= entryB.end)) {
+          // Overlap detected, determine if it involves "Deslocamento"
+          let isDeslocamento = entryA.company === "Deslocamento" || entryB.company === "Deslocamento";
+          let errorMessage;
+          if (isDeslocamento) {
+            errorMessage = `- ${day} possui um conflito de deslocamento e horários entre as entradas ID ${entryA.id} (${entryA.start} às ${entryA.end}) e ID ${entryB.id} (${entryB.start} às ${entryB.end}).`;
+          } else {
+            errorMessage = `- ${day} possui um conflito de horários de trabalhos entre os vínculos ID ${entryA.id} (${entryA.start} às ${entryA.end}) e ID ${entryB.id} (${entryB.start} às ${entryB.end}).`;
+          }
+          messages.push(errorMessage);
+        }
+      }
     }
-    messages.push(errorMessage);
-  }
+  });
 
   return messages;
 }
@@ -44,7 +55,7 @@ export function validateContinuousWork(schedule, day, startTime, endTime, compan
     if (continuousWork > 360) {
       const hoursWorked = Math.floor(continuousWork / 60);
       const minutesWorked = continuousWork % 60;
-      messages.push(`- No(a) ${day}, existem ${hoursWorked} horas e ${minutesWorked} minutos de trabalho contínuo, sem o intervalo mínimo de 1 hora, no vínculo ${company}. (Máximo são 6 horas)`);
+      messages.push(`- ${day} possui ${hoursWorked} horas e ${minutesWorked} minutos de trabalho contínuo, sem o intervalo mínimo de 1 hora, no vínculo ${company}. (Máximo são 6 horas)`);
     }
   }
 
@@ -68,7 +79,7 @@ export function validateTotalDuration(schedule, day, startTime, endTime, company
     if (totalDuration > 600) {
       const hoursWorked = Math.floor(totalDuration / 60);
       const minutesWorked = totalDuration % 60;
-      messages.push(`- No(a) ${day}, existem ${hoursWorked} horas e ${minutesWorked} minutos totais de trabalho no vínculo ${company}. (Máximo são 10 horas)`);
+      messages.push(`- ${day} possui ${hoursWorked} horas e ${minutesWorked} minutos totais de trabalho no vínculo ${company}. (Máximo são 10 horas)`);
     }
   }
 
@@ -94,7 +105,7 @@ export function validateElevenHourBreak(schedule, day, startTime, endTime, compa
       // Less than 11 hours
       const hoursRest = Math.floor(restTimeBeforeStart / 60);
       const minutesRest = restTimeBeforeStart % 60;
-      messages.push(`- Entre ${previousDay} e ${day} existem apenas ${hoursRest} horas e ${minutesRest} minutos de descanso. (Mínimo é de 11 horas)`);
+      messages.push(`- Entre ${previousDay} e ${day} existem apenas ${hoursRest} horas e ${minutesRest} minutos de descanso. (Mínimo são 11 horas)`);
     }
   }
 
@@ -107,7 +118,7 @@ export function validateElevenHourBreak(schedule, day, startTime, endTime, compa
       // Less than 11 hours
       const hoursRest = Math.floor(restTimeAfterEnd / 60);
       const minutesRest = restTimeAfterEnd % 60;
-      messages.push(`- Entre ${day} e ${nextDay} existem apenas ${hoursRest} horas e ${minutesRest} minutos de descanso. (Mínimo é de 11 horas)`);
+      messages.push(`- Entre ${day} e ${nextDay} existem apenas ${hoursRest} horas e ${minutesRest} minutos de descanso. (Mínimo são 11 horas)`);
     }
   }
 
@@ -132,4 +143,20 @@ export function calculateCompanyHours(schedule) {
   });
 
   return companyHours;
+}
+
+// Function to validate at least one rest day per week
+export function validateWeeklyRestDay(schedule) {
+  let messages = [];
+  const daysOfWork = Object.keys(schedule);
+  const totalDays = ["Domingo", "Segunda", "Terca", "Quarta", "Quinta", "Sexta", "Sabado"];
+
+  // Check if the days of work cover every day in the week
+  const hasRestDay = totalDays.some((day) => !daysOfWork.includes(day));
+
+  if (!hasRestDay) {
+    messages.push("- A escala não possui descanso semanal (Mínimo de um dia de descanso).");
+  }
+
+  return messages;
 }
