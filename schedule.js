@@ -1,3 +1,4 @@
+// schedule.js
 import { isValidTime, convertToMinutes, clearDisplayedErrorMessages } from "./utils.js";
 import { validateContinuousWork, validateTotalDuration, validateElevenHourBreak, validateOverlappingHours, calculateCompanyHours, validateWeeklyRestDay } from "./rules.js";
 
@@ -49,6 +50,8 @@ function addEmploymentBond() {
   displayErrorMessages(errorMessages);
 
   displayCompanyHours();
+  displayDailyCompanyHours();
+  buildHourlyScheduleTable(schedule);
   updateUrlWithSchedule();
 }
 
@@ -116,6 +119,109 @@ function displayCompanyHours() {
   });
 }
 
+function calculateDailyCompanyHours(schedule) {
+  const dailyCompanyHours = {};
+
+  Object.keys(schedule).forEach((day) => {
+    if (!dailyCompanyHours[day]) dailyCompanyHours[day] = {};
+
+    schedule[day].forEach((slot) => {
+      const startMinutes = convertToMinutes(slot.start);
+      const endMinutes = convertToMinutes(slot.end);
+      const duration = endMinutes - startMinutes;
+
+      if (!dailyCompanyHours[day][slot.company]) {
+        dailyCompanyHours[day][slot.company] = 0;
+      }
+
+      dailyCompanyHours[day][slot.company] += duration;
+    });
+  });
+
+  return dailyCompanyHours;
+}
+
+function displayDailyCompanyHours() {
+  const dailyCompanyHours = calculateDailyCompanyHours(schedule);
+  const dailySummaryContainer = document.getElementById("dailyCompanyHoursSummary");
+  dailySummaryContainer.innerHTML = ""; // Clear previous summary
+
+  Object.keys(dailyCompanyHours).forEach((day) => {
+    const dayElement = document.createElement("div");
+    dayElement.innerHTML = `<strong>${day}:</strong>`;
+    const companyList = document.createElement("ul");
+
+    Object.keys(dailyCompanyHours[day]).forEach((company) => {
+      const hours = Math.floor(dailyCompanyHours[day][company] / 60);
+      const minutes = dailyCompanyHours[day][company] % 60;
+      const companyElement = document.createElement("li");
+      companyElement.textContent = `${company}: ${hours} horas e ${minutes} minutos`;
+      companyList.appendChild(companyElement);
+    });
+
+    dayElement.appendChild(companyList);
+    dailySummaryContainer.appendChild(dayElement);
+  });
+}
+
+function buildHourlyScheduleTable(schedule) {
+  const tableBody = document.getElementById("hourlyScheduleTable").getElementsByTagName("tbody")[0];
+  tableBody.innerHTML = "";
+
+  const daysOfWeek = ["Segunda", "Terca", "Quarta", "Quinta", "Sexta", "Sabado", "Domingo"];
+
+  for (let hour = 0; hour < 24; hour++) {
+    const row = tableBody.insertRow();
+    const hourCell = row.insertCell(0);
+    hourCell.textContent = `${padTimeComponent(hour.toString())}:00 - ${padTimeComponent((hour + 1).toString())}:00`;
+
+    daysOfWeek.forEach((day) => {
+      const cell = row.insertCell();
+      if (schedule[day]) {
+        const entries = schedule[day].filter((slot) => {
+          const startMinutes = convertToMinutes(slot.start);
+          const endMinutes = convertToMinutes(slot.end);
+          const currentHourStart = hour * 60;
+          const currentHourEnd = (hour + 1) * 60;
+          return startMinutes < currentHourEnd && endMinutes > currentHourStart;
+        });
+
+        const companies = entries
+          .map((entry) => {
+            let companyClass = "";
+            switch (entry.company) {
+              case "UFSJ 1":
+                companyClass = "ufsj1";
+                break;
+              case "UFSJ 2":
+                companyClass = "ufsj2";
+                break;
+              case "Externo 1":
+                companyClass = "externo1";
+                break;
+              case "Externo 2":
+                companyClass = "externo2";
+                break;
+              case "Externo 3":
+                companyClass = "externo3";
+                break;
+              case "Externo 4":
+                companyClass = "externo4";
+                break;
+              case "Deslocamento":
+                companyClass = "deslocamento";
+                break;
+            }
+            return `<span class="${companyClass}">${entry.company}</span>`;
+          })
+          .join(", ");
+
+        cell.innerHTML = companies;
+      }
+    });
+  }
+}
+
 function validateWorkingHoursRules(schedule) {
   // Clear existing error messages
   clearDisplayedErrorMessages();
@@ -160,6 +266,8 @@ function removeEmploymentBond(id) {
   displayCompanyHours();
   updateUrlWithSchedule();
   validateWorkingHoursRules(schedule);
+  displayDailyCompanyHours();
+  buildHourlyScheduleTable(schedule);
   displayErrorMessages(errorMessages);
 }
 
@@ -225,6 +333,7 @@ function initializePageWithUrlData() {
   loadScheduleFromUrl();
   updateTable(); // this function updates the table based on the global `schedule` object
   displayCompanyHours(); // Update the company hours summary
+  displayDailyCompanyHours(); // Update the daily company hours summary
 
   // Find the maximum id in the loaded schedule to adjust inputId
   let maxId = 0;
@@ -241,6 +350,7 @@ function initializePageWithUrlData() {
 
   validateWorkingHoursRules(schedule);
   displayErrorMessages(errorMessages);
+  buildHourlyScheduleTable(schedule);
 }
 
 const dayMapping = {
@@ -256,10 +366,10 @@ const dayMapping = {
 const companyMapping = {
   "UFSJ 1": 0,
   "UFSJ 2": 1,
-  "Empresa 3": 2,
-  "Empresa 4": 3,
-  "Empresa 5": 4,
-  "Empresa 6": 5,
+  "Externo 1": 2,
+  "Externo 2": 3,
+  "Externo 4": 4,
+  "Externo 5": 5,
   Deslocamento: 6,
 };
 

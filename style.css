@@ -95,3 +95,74 @@ p {
 .red-icon {
   color: red;
 }
+
+#hourlyScheduleTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#hourlyScheduleTable thead {
+  background-color: #333; /* Cabeçalho verde */
+  color: white;
+}
+
+#hourlyScheduleTable th,
+#hourlyScheduleTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#hourlyScheduleTable tr:nth-child(even) {
+  background-color: #f2f2f2; /* Linhas pares com fundo cinza claro */
+}
+
+#hourlyScheduleTable tr:hover {
+  background-color: #aaa; /* Fundo cinza mais escuro ao passar o mouse */
+}
+
+#hourlyScheduleTable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+}
+
+#hourlyScheduleTable tbody tr {
+  margin: 0;
+  padding: 0;
+}
+
+#hourlyScheduleTable tbody td {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+/* Estilos específicos para cada vínculo */
+/* .ufsj1 {
+  font-weight: bold;
+  color: black;
+}
+
+.ufsj2 {
+  font-weight: bold;
+  color: #666;
+}
+
+.externo1 {
+  color: #0056b3;
+}
+
+.externo2 {
+  color: #0056b3; 
+}
+
+.externo3 {
+  color: #0056b3; 
+}
+
+.externo4 {
+  color: #0056b3;
+}
+
+.deslocamento {
+  color: green;
+} */

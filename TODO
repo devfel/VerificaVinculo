@@ -1,6 +1,6 @@
 // Regras Mensagens de erro:
-// 1. Não pode trabalhar mais de 6 horas seguidas
-// 2. Não pode trabalhar mais de 10 horas por dia
+// 1. Não pode trabalhar mais de 6 horas seguidas (no mesmo vínculo)
+// 2. Não pode trabalhar mais de 10 horas por dia (no mesmo vínculo)
 // 3. Deve haver um intervalo de 11 horas entre o final de um dia e o início do próximo
 // 4. Não pode haver sobreposição de horários no mesmo dia, independente da empresa
 
@@ -9,18 +9,18 @@
 // 6. Um novo horário deve ser entre 00:00 e 23:59 tanto para o horário inicial quanto para o final.
 
 // TODO
-// [ ] Ao inves de conferir um horario adicionado, o sistema deve conferir todos os horarios e aplicar as regras necessarias que encontrar/mensagens.
+// [X] Ao inves de conferir um horario adicionado, o sistema deve conferir todos os horarios e aplicar as regras necessarias que encontrar/mensagens.
 // isso vai ajudar a controlar nao apenas a inserçao de horarios mas tambem a edição e remoção de horarios.
-// [ ] Alterar informações de horários já cadastrados (ou pelo menos ter opção de excluir)
-// [ ] Talvez Remover algumas regras de algumas vinculos quando nao UFSJ
-
-// [ ] Remover alerta de horario batendo. Apenas mostrar o erro.
-// [ ] Se o deslocamento for adicionado antes do horario do trabalho ele nao identifica.
-
+// [X] Alterar informações de horários já cadastrados (ou pelo menos ter opção de excluir)
+// [X] Remover alerta (impedindo cadastro) de horario batendo. Apenas mostrar o erro.
+// [X] Se o deslocamento for adicionado antes do horario do trabalho ele nao identifica.
 // [X] Colocar total de horas em cada vínculo (empresa).
 // [X] Deslocamento não conta em algumas regras e conta em outras (conta por exemplo no overlap mas nao conta em horas trabalhadas)
 // [X] Ter um dia de descanso na semana
-
 // [X] Salvar Link para compartilhar
-// [ ] Link não carrega os Erros (tem que recalcular os erros)
-// [ ] Link é muito grande, tem que alterar para usar codigos ao inves das entradas todas.
+// [X] Link não carrega os Erros (tem que recalcular os erros)
+// [X] Link é muito grande, tem que alterar para usar codigos ao inves das entradas todas.
+
+// [ ] Talvez Remover algumas regras de algums vinculos quando não UFSJ
+// [ ] Sistema nao pega se o usuário burlar regra de 6 horas sem intervalo em vinculos diferentes (Adicionar Regra, ignorar se for deslocamento)
+// [X] Sistema nao pega se o usuário burlar regra de mais de 10 horas diarias em vinculos diferentes (Não é necessário contabilizar)

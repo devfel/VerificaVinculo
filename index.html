@@ -14,7 +14,7 @@
         <h2 class="mb-4">Compatibilidade de Horário</h2>
 
         <div class="row custom-gutter">
-          <div class="col-12 col-sm-3">
+          <div class="col-12 col-sm-3 col-lg-4">
             <label for="daySelect">Dia da Semana:</label>
             <select id="daySelect" class="form-control">
               <option value="Segunda">Segunda</option>
@@ -27,20 +27,20 @@
             </select>
           </div>
 
-          <div class="col-12 col-sm-3">
+          <div class="col-12 col-sm-3 col-lg-4">
             <label for="companySelect">Vínculo:</label>
             <select id="companySelect" class="form-control">
               <option value="UFSJ 1">UFSJ 1</option>
               <option value="UFSJ 2">UFSJ 2</option>
-              <option value="Empresa 3">Empresa 3</option>
-              <option value="Empresa 4">Empresa 4</option>
-              <option value="Empresa 5">Empresa 5</option>
-              <option value="Empresa 6">Empresa 6</option>
+              <option value="Externo 1">Externo 1</option>
+              <option value="Externo 2">Externo 2</option>
+              <option value="Externo 3">Externo 3</option>
+              <option value="Externo 4">Externo 4</option>
               <option value="Deslocamento">Deslocamento</option>
             </select>
           </div>
 
-          <div class="col-12 col-sm-3">
+          <div class="col-12 col-sm-3 col-lg-2">
             <label>Inicial:</label>
             <div class="input-group">
               <input type="number" id="startHour" class="form-control" min="0" max="23" placeholder="HH" />
@@ -49,7 +49,7 @@
             </div>
           </div>
 
-          <div class="col-12 col-sm-3">
+          <div class="col-12 col-sm-3 col-lg-2">
             <label>Final:</label>
             <div class="input-group">
               <input type="number" id="endHour" class="form-control" min="0" max="23" placeholder="HH" />
@@ -85,9 +85,35 @@
       <div id="errorMessages"></div>
 
       <hr />
+      <!-- Hourly Schedule Table -->
+      <div class="section-title" style="color: purple">Tabela de Horários</div>
+      <table id="hourlyScheduleTable" class="table mt-4">
+        <thead>
+          <tr>
+            <th>Horário</th>
+            <th>Segunda</th>
+            <th>Terça</th>
+            <th>Quarta</th>
+            <th>Quinta</th>
+            <th>Sexta</th>
+            <th>Sábado</th>
+            <th>Domingo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Dynamic content will go here -->
+        </tbody>
+      </table>
+
+      <hr />
       <!-- Company Hours Summary, potentially using Bootstrap cards -->
       <div class="section-title" style="color: blue">Somatórios</div>
       <div id="companyHoursSummary"></div>
+
+      <hr />
+      <!-- Daily Company Hours Summary -->
+      <div class="section-title" style="color: green">Horas por Empresa por Dia</div>
+      <div id="dailyCompanyHoursSummary"></div>
     </div>
 
     <script type="module" src="schedule.js"></script>
