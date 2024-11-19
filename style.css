@@ -1,7 +1,7 @@
 /* style.css */
 
 #errorMessages {
-  color: red;
+  color: gray;
 }
 
 #companyHoursSummary {
@@ -137,7 +137,7 @@ p {
 }
 
 /* Estilos específicos para cada vínculo */
-/* .ufsj1 {
+.ufsj1 {
   font-weight: bold;
   color: black;
 }
@@ -152,11 +152,11 @@ p {
 }
 
 .externo2 {
-  color: #0056b3; 
+  color: #0056b3;
 }
 
 .externo3 {
-  color: #0056b3; 
+  color: #0056b3;
 }
 
 .externo4 {
@@ -165,4 +165,4 @@ p {
 
 .deslocamento {
   color: green;
-} */
+}

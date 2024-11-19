@@ -8,7 +8,7 @@ let inputId = 1;
 
 // Simplified DOM interaction functions
 const getValueById = (id) => document.getElementById(id).value;
-const padTimeComponent = (value) => value.padStart(2, "0");
+const padTimeComponent = (value) => value.toString().padStart(2, "0");
 
 function addEmploymentBond() {
   const day = getValueById("daySelect");
@@ -59,30 +59,30 @@ function updateTable() {
   const tableBody = document.getElementById("scheduleTable").getElementsByTagName("tbody")[0];
   tableBody.innerHTML = "";
 
-  Object.keys(schedule).forEach((day) => {
-    schedule[day].forEach((slot) => {
-      const row = tableBody.insertRow();
+  const daysOfWeek = ["Segunda", "Terca", "Quarta", "Quinta", "Sexta", "Sabado", "Domingo"];
 
-      const idCell = row.insertCell(0);
-      const dayCell = row.insertCell(1);
-      const timeCell = row.insertCell(2);
-      const companyCell = row.insertCell(3);
-      const removeCell = row.insertCell(4);
+  daysOfWeek.forEach((day) => {
+    if (schedule[day]) {
+      schedule[day].forEach((slot) => {
+        const row = tableBody.insertRow();
+        const idCell = row.insertCell(0);
+        const dayCell = row.insertCell(1);
+        const timeCell = row.insertCell(2);
+        const companyCell = row.insertCell(3);
+        const removeCell = row.insertCell(4);
 
-      idCell.textContent = slot.id;
-      dayCell.textContent = day;
-      timeCell.textContent = `${slot.start} às ${slot.end}`;
-      companyCell.textContent = slot.company;
-      removeCell.innerHTML = `<a href="#" class="remove-bond" data-id="${slot.id}"><i class="fas fa-times red-icon"></i></a>`;
+        idCell.textContent = slot.id;
+        dayCell.textContent = day;
+        timeCell.textContent = `${slot.start} às ${slot.end}`;
+        companyCell.textContent = slot.company;
+        removeCell.innerHTML = `<a href="#" class="remove-bond" data-id="${slot.id}"><i class="fas fa-times red-icon"></i></a>`;
 
-      // Add click event listener for removing the bond
-      removeCell.firstChild.addEventListener("click", function (e) {
-        e.preventDefault();
-        removeEmploymentBond(slot.id);
+        removeCell.firstChild.addEventListener("click", function (e) {
+          e.preventDefault();
+          removeEmploymentBond(slot.id);
+        });
       });
-
-      // End
-    });
+    }
   });
 }
 
@@ -146,21 +146,25 @@ function displayDailyCompanyHours() {
   const dailySummaryContainer = document.getElementById("dailyCompanyHoursSummary");
   dailySummaryContainer.innerHTML = ""; // Clear previous summary
 
-  Object.keys(dailyCompanyHours).forEach((day) => {
-    const dayElement = document.createElement("div");
-    dayElement.innerHTML = `<strong>${day}:</strong>`;
-    const companyList = document.createElement("ul");
+  const daysOfWeek = ["Segunda", "Terca", "Quarta", "Quinta", "Sexta", "Sabado", "Domingo"];
 
-    Object.keys(dailyCompanyHours[day]).forEach((company) => {
-      const hours = Math.floor(dailyCompanyHours[day][company] / 60);
-      const minutes = dailyCompanyHours[day][company] % 60;
-      const companyElement = document.createElement("li");
-      companyElement.textContent = `${company}: ${hours} horas e ${minutes} minutos`;
-      companyList.appendChild(companyElement);
-    });
+  daysOfWeek.forEach((day) => {
+    if (dailyCompanyHours[day]) {
+      const dayElement = document.createElement("div");
+      dayElement.innerHTML = `<strong>${day}:</strong>`;
+      const companyList = document.createElement("ul");
 
-    dayElement.appendChild(companyList);
-    dailySummaryContainer.appendChild(dayElement);
+      Object.keys(dailyCompanyHours[day]).forEach((company) => {
+        const hours = Math.floor(dailyCompanyHours[day][company] / 60);
+        const minutes = dailyCompanyHours[day][company] % 60;
+        const companyElement = document.createElement("li");
+        companyElement.textContent = `${company}: ${hours} horas e ${minutes} minutos`;
+        companyList.appendChild(companyElement);
+      });
+
+      dayElement.appendChild(companyList);
+      dailySummaryContainer.appendChild(dayElement);
+    }
   });
 }
 
@@ -169,56 +173,67 @@ function buildHourlyScheduleTable(schedule) {
   tableBody.innerHTML = "";
 
   const daysOfWeek = ["Segunda", "Terca", "Quarta", "Quinta", "Sexta", "Sabado", "Domingo"];
+  const interval = parseInt(document.getElementById("timeIntervalSelect").value, 10); // Get selected interval
 
+  // Loop over each half-hour interval (30 minutes or 60 minutes)
   for (let hour = 0; hour < 24; hour++) {
-    const row = tableBody.insertRow();
-    const hourCell = row.insertCell(0);
-    hourCell.textContent = `${padTimeComponent(hour.toString())}:00 - ${padTimeComponent((hour + 1).toString())}:00`;
+    for (let minute = 0; minute < 60; minute += interval) {
+      const row = tableBody.insertRow();
+      const startTime = `${padTimeComponent(hour.toString())}:${padTimeComponent(minute.toString())}`;
+      const endTime = minute + interval >= 60 ? `${padTimeComponent((hour + 1).toString())}:00` : `${padTimeComponent(hour.toString())}:${padTimeComponent(minute + interval)}`;
+      const timeRange = `${startTime} - ${endTime}`;
 
-    daysOfWeek.forEach((day) => {
-      const cell = row.insertCell();
-      if (schedule[day]) {
-        const entries = schedule[day].filter((slot) => {
-          const startMinutes = convertToMinutes(slot.start);
-          const endMinutes = convertToMinutes(slot.end);
-          const currentHourStart = hour * 60;
-          const currentHourEnd = (hour + 1) * 60;
-          return startMinutes < currentHourEnd && endMinutes > currentHourStart;
-        });
+      const hourCell = row.insertCell(0);
+      hourCell.textContent = timeRange;
 
-        const companies = entries
-          .map((entry) => {
-            let companyClass = "";
-            switch (entry.company) {
-              case "UFSJ 1":
-                companyClass = "ufsj1";
-                break;
-              case "UFSJ 2":
-                companyClass = "ufsj2";
-                break;
-              case "Externo 1":
-                companyClass = "externo1";
-                break;
-              case "Externo 2":
-                companyClass = "externo2";
-                break;
-              case "Externo 3":
-                companyClass = "externo3";
-                break;
-              case "Externo 4":
-                companyClass = "externo4";
-                break;
-              case "Deslocamento":
-                companyClass = "deslocamento";
-                break;
-            }
-            return `<span class="${companyClass}">${entry.company}</span>`;
-          })
-          .join(", ");
+      daysOfWeek.forEach((day) => {
+        const cell = row.insertCell();
+        if (schedule[day]) {
+          const entries = schedule[day].filter((slot) => {
+            const startMinutes = convertToMinutes(slot.start);
+            const endMinutes = convertToMinutes(slot.end);
+            const currentIntervalStart = hour * 60 + minute;
+            const currentIntervalEnd = currentIntervalStart + interval;
+            return startMinutes < currentIntervalEnd && endMinutes > currentIntervalStart;
+          });
 
-        cell.innerHTML = companies;
-      }
-    });
+          const companies = entries
+            .map((entry) => {
+              let companyClass = "";
+              //let companyName = entry.company === "Externo 1" ? "CEFET" : entry.company === "UFSJ 1" ? "UFSJ" : entry.company;
+              let companyName = entry.company;
+
+              switch (companyName) {
+                case "UFSJ 1":
+                  companyClass = "ufsj1";
+                  break;
+                case "UFSJ 2":
+                  companyClass = "ufsj2";
+                  break;
+                case "Externo 1":
+                  companyClass = "externo1";
+                  break;
+                case "Externo 2":
+                  companyClass = "externo2";
+                  break;
+                case "Externo 3":
+                  companyClass = "externo3";
+                  break;
+                case "Externo 4":
+                  companyClass = "externo4";
+                  break;
+                case "Deslocamento":
+                  companyClass = "deslocamento";
+                  break;
+              }
+              return `<span class="${companyClass}">${companyName}</span>`;
+            })
+            .join(", ");
+
+          cell.innerHTML = companies;
+        }
+      });
+    }
   }
 }
 
@@ -383,4 +398,13 @@ const reverseCompanyMapping = Object.keys(companyMapping).reduce((acc, key) => {
   acc[companyMapping[key]] = key;
   return acc;
 }, {});
+
 // ================ ================ ================
+
+// SELECT 30 MINUTES OR 1 HOUR MENU.
+document.addEventListener("DOMContentLoaded", () => {
+  const intervalSelect = document.getElementById("timeIntervalSelect");
+  intervalSelect.addEventListener("change", () => {
+    buildHourlyScheduleTable(schedule);
+  });
+});

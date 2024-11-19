@@ -81,12 +81,19 @@
 
       <hr />
       <!-- Error Messages -->
-      <div class="section-title" style="color: red">Erros</div>
+      <div class="section-title">Erros e Recomendações</div>
       <div id="errorMessages"></div>
 
       <hr />
       <!-- Hourly Schedule Table -->
       <div class="section-title" style="color: purple">Tabela de Horários</div>
+      <div class="d-flex justify-content-start align-items-center mt-2">
+        <label for="timeIntervalSelect" class="mr-2">Selecione o Intervalo de Exibição:</label>
+        <select id="timeIntervalSelect" class="form-control w-auto">
+          <option value="30">30 Minutos</option>
+          <option value="60">1 Hora</option>
+        </select>
+      </div>
       <table id="hourlyScheduleTable" class="table mt-4">
         <thead>
           <tr>
